@@ -234,6 +234,8 @@ public class Page {
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
+                        mainPageMethod(itemsList, orderList);
+                        break;
                     }
                 case 2:
                     mainPageMethod(itemsList, orderList);
