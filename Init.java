@@ -11,7 +11,19 @@ public class Init {
     private HashMap<Integer, List<Item>> dailyOrderList;
     private long dailySales;
     private int dailyOrderCount;
-
+    Scanner scanner = new Scanner(System.in);
+    private String inputString;
+    private int input;
+    // 스캐너 함수입니다
+    public static int kioskScanner(String scantest) {
+        int num = 0;
+        if (scantest != null && scantest.matches("[-+]?\\d*\\.?\\d+")) {
+            num = Integer.parseInt(scantest);
+        } else {
+            return -1;
+        }
+        return num;
+    }
     //객체 생성
     public Init() {
 //        menus = new HashMap<>();
@@ -61,8 +73,8 @@ public class Init {
 
 
 
-     public void firstPage() {
-         System.out.println("""
+    public void firstPage() {
+        System.out.println("""
              ================================================
               
  
@@ -70,14 +82,15 @@ public class Init {
          
  
              ================================================""");
-         Scanner scanner = new Scanner(System.in);
-         System.out.print(">");
-         int input = scanner.nextInt();
-         switch (input) {
-             case 1 -> adminPage(); // 관리자 모드 들어가는 메소드 넣기
-             case 2 -> mainMenuPage();
-             case 3 -> System.out.println("프로그램을 종료합니다");
-             default -> { System.out.println("잘못 입력하셨습니다"); firstPage(); }
+        inputString = scanner.nextLine();
+        int input = kioskScanner(inputString);
+        System.out.print(">");
+        switch (input) {
+            case 1 -> adminPage(); // 관리자 모드 들어가는 메소드 넣기
+            case 2 -> mainMenuPage();
+            case 3 -> System.out.println("프로그램을 종료합니다");
+            case -1 -> { System.out.println("잘못 입력하셨습니다"); firstPage(); }
+            default -> { System.out.println("잘못 입력하셨습니다"); firstPage(); }
         }
     }
 
@@ -95,9 +108,9 @@ public class Init {
               
                =========================================================
                 """);
-        Scanner scanner = new Scanner(System.in);
+        inputString = scanner.nextLine();
+        int select = kioskScanner(inputString);
         System.out.print(">");
-        int select = scanner.nextInt();
         switch (select) {
             case 1:
                 System.out.println("============================");
@@ -107,9 +120,15 @@ public class Init {
                 System.out.println();
                 System.out.println("[ 1. 뒤로 가기 ]");
                 System.out.println("============================");
-                int adminSelect = scanner.nextInt();
+
+                inputString = scanner.nextLine();
+                int adminSelect = kioskScanner(inputString);
                 switch (adminSelect) {
                     case 1 -> adminPage();
+                    case -1 -> { System.out.println("숫자를 잘못 입력하셨습니다");
+                        System.out.println("관리자 페이지 메인으로 나갑니다");
+                        System.out.println();
+                        adminPage(); }
                     default -> { System.out.println("숫자를 잘못 입력하셨습니다");
                         System.out.println("관리자 페이지 메인으로 나갑니다");
                         System.out.println();
@@ -123,11 +142,13 @@ public class Init {
                 System.out.println();
                 System.out.println("===================================================");
                 System.out.print(">");
-                int adminSelect2 = scanner.nextInt();
+                inputString = scanner.nextLine();
+                int adminSelect2 = kioskScanner(inputString);
                 switch (adminSelect2) {
                     case 1:
                         System.out.print("주문 번호>");
-                        int adminSelect3 = scanner.nextInt();
+                        inputString = scanner.nextLine();
+                        int adminSelect3 = kioskScanner(inputString);
                         try {
                             List<Item> orderList = dailyOrderList.get(adminSelect3);
                             System.out.println("======================================");
@@ -148,9 +169,14 @@ public class Init {
                             System.out.println("======================================");
                         }
                         System.out.print(">");
-                        int adminSelect4 = scanner.nextInt();
+                        inputString = scanner.nextLine();
+                        int adminSelect4 = kioskScanner(inputString);
                         switch (adminSelect4){
                             case 1:
+                                adminPage();
+                            case -1:
+                                System.out.println("숫자를 잘못 입력하셨습니다");
+                                System.out.println("관리자 페이지 메인으로 나갑니다");
                                 adminPage();
                             default:
                                 System.out.println("숫자를 잘못 입력하셨습니다");
@@ -170,11 +196,24 @@ public class Init {
                         System.out.println("[ 1. 뒤로 가기 ]");
                         System.out.println();
                         System.out.println("=================================");
-                        int select5 = scanner.nextInt();
+                        inputString = scanner.nextLine();
+                        int select5 = kioskScanner(inputString);
                         switch (select5){
                             case 1:
                                 adminPage();
+                            case -1:
+                                System.out.println("숫자를 잘못 입력하셨습니다");
+                                System.out.println("관리자 페이지 메인으로 나갑니다");
+                                adminPage();
+                            default:
+                                System.out.println("숫자를 잘못 입력하셨습니다");
+                                System.out.println("관리자 페이지 메인으로 나갑니다");
+                                adminPage();
                         }
+                    case -1:
+                        System.out.println("숫자를 잘못 입력하셨습니다");
+                        System.out.println("관리자 페이지 메인으로 나갑니다");
+                        adminPage();
                     default:
                         System.out.println("숫자를 잘못 입력하셨습니다");
                         System.out.println("관리자 페이지 메인으로 나갑니다");
@@ -186,6 +225,10 @@ public class Init {
             case 4:
                 firstPage();
                 break;
+            case -1:
+                System.out.println("숫자를 잘못 입력하셨습니다");
+                System.out.println("관리자 페이지 메인으로 나갑니다");
+                adminPage();
             default:
                 System.out.println("숫자를 잘못 입력하셨습니다");
                 System.out.println("관리자 페이지 메인으로 나갑니다");
@@ -195,7 +238,7 @@ public class Init {
 
 
     void addDeletePage() {
-        Scanner scanner = new Scanner(System.in);
+
         System.out.println("""
         =========================================
 
@@ -205,11 +248,13 @@ public class Init {
        
         ==========================================""");
         System.out.print(">");
-        int addDelete = scanner.nextInt();
+        inputString = scanner.nextLine();
+        int addDelete = kioskScanner(inputString);
         switch (addDelete) {
             case 1 -> addMenu();
             case 2 -> deleteMenu();
             case 3 -> adminPage();
+            case -1 -> { System.out.println("잘못 입력하셨습니다"); addDeletePage(); }
             default -> { System.out.println("잘못 입력하셨습니다"); addDeletePage(); }
         }
     }
@@ -226,7 +271,7 @@ public class Init {
              1. Burgers         | 앵거스 비프 통살을 다져만든 버거
              2. Frozen Custard  | 매장에서 신선하게 만드는 아이스크림
              3. Drinks          | 매장에서 직접 만드는 음료
-                             
+                            
              [ ORDER MENU ]
              4. Order       | 장바구니를 확인 후 주문합니다.
              5. Cancel      | 진행중인 주문을 취소합니다.
@@ -235,9 +280,9 @@ public class Init {
              6. Home        | 처음 화면으로 돌아갑니다.
             
             =====================================================""");
-        Scanner scanner = new Scanner(System.in);
         System.out.print(">");
-        int select = scanner.nextInt();
+        inputString = scanner.nextLine();
+        int select = kioskScanner(inputString);
         switch (select) {
             case 1:
                 burgerPage();
@@ -258,6 +303,9 @@ public class Init {
                 firstPage();
                 cart.clear();
                 break;
+            case -1:
+                System.out.println("잘못 입력하셨습니다");
+                mainMenuPage();
             default:
                 System.out.println("잘못 입력하셨습니다");
                 mainMenuPage();
@@ -291,9 +339,10 @@ public class Init {
         for (int i = 1; i <= burgerMenu.size(); i++) {
             burgerdMap.put(i, burgerMenu.get(i-1));
         }
-        Scanner scanner = new Scanner(System.in);
+
         System.out.print(">");
-        int selectItem = scanner.nextInt();
+        inputString = scanner.nextLine();
+        int selectItem = kioskScanner(inputString);
         if (selectItem == burgerMenu.size()+1) {
             orderPage();
         } else if (selectItem == burgerMenu.size()+2) {
@@ -334,9 +383,9 @@ public class Init {
         for (int i = 1; i <= frozenCustardMenu.size(); i++) {              // HashMap애 키값 1부터 담는중, 1부터 프로즌 메뉴리스트.사이즈 값(7)까지 1부터 7까지 돈다
             frozenCustardMap.put(i, frozenCustardMenu.get(i-1));
         }
-        Scanner scanner = new Scanner(System.in);
         System.out.print(">");
-        int selectItem = scanner.nextInt();
+        inputString = scanner.nextLine();
+        int selectItem = kioskScanner(inputString);
         if (selectItem == frozenCustardMenu.size()+1) {
             orderPage();
         } else if (selectItem == frozenCustardMenu.size()+2) {
@@ -377,9 +426,9 @@ public class Init {
         for (int i = 1; i <= drinkMenu.size(); i++) {
             drinkMap.put(i, drinkMenu.get(i-1));
         }
-        Scanner scanner = new Scanner(System.in);
         System.out.print(">");
-        int selectItem = scanner.nextInt();
+        inputString = scanner.nextLine();
+        int selectItem = kioskScanner(inputString);
         if (selectItem == drinkMenu.size()+1) {
             orderPage();
         } else if (selectItem == drinkMenu.size()+2) {
@@ -415,8 +464,8 @@ public class Init {
             System.out.println();
             System.out.printf(" [ 1. 결제하기 : %d | 2. 메뉴 추가 ]\n", totalPrice);
             System.out.println("===============================================================================================");
-            Scanner scanner = new Scanner(System.in);
-            int select = scanner.nextInt();
+            inputString = scanner.nextLine();
+            int select = kioskScanner(inputString);
             switch (select) {
                 case 1:
                     //결제 하고, 대기번호 출력, 오더리스트로 옮기기 그 후 cart.clear()
@@ -428,7 +477,7 @@ public class Init {
                     System.out.println();
                     System.out.println();
                     System.out.println("=============================================");
-                                                            //orderList는 관리자 페이지에서 쓸때 가져가서 쓰면 될 듯 합니다
+                    //orderList는 관리자 페이지에서 쓸때 가져가서 쓰면 될 듯 합니다
                     dailySales += totalPrice;                                                    //dailySales 하루 매출
                     dailyOrderCount =orderNumber;                                                // 하루 주문 횟수
 
@@ -439,6 +488,12 @@ public class Init {
                 case 2:
                     mainMenuPage();
                     break;
+                case -1:
+                    System.out.println("잘못 입력하셨습니다.");
+                    mainMenuPage();
+                default:
+                    System.out.println("잘못 입력하셨습니다.");
+                    mainMenuPage();
             }
         } else {
             System.out.println("""
@@ -468,7 +523,6 @@ public class Init {
 
 
     public void addMenu() {
-        Scanner scanner =new Scanner(System.in);
         System.out.print("추가할 메뉴의 종류를 입력해 주세요");
         System.out.print(">");
         String menu = scanner.nextLine();
